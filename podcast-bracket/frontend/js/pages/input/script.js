@@ -4,18 +4,32 @@ document.addEventListener('DOMContentLoaded', () => {
     const hostsList = document.getElementById('hostsList');
     const addMatchupBtn = document.getElementById('addMatchupBtn');
     const matchupsContainer = document.getElementById('matchupsContainer');
+    const addThreeMatchupsBtn = document.getElementById('addThreeMatchupsBtn');
 
     const defaultHosts = ['Aman', 'Matt'];
     let hosts = [...defaultHosts]; // Start with default hosts
-    const addThreeMatchupsBtn = document.getElementById('addThreeMatchupsBtn');
 
-    // Handle vote checkbox selection
-    const handleVoteSelection = (checkbox, row) => {
+    // Handle vote selection
+    const handleVoteSelection = (element, row) => {
+        const checkbox = element.type === 'checkbox' ? element : element.querySelector('.vote-checkbox');
+        const cell = checkbox.closest('td');
+
+        // Toggle the checkbox
+        checkbox.checked = !checkbox.checked;
+
         if (checkbox.checked) {
             // Uncheck the other checkbox in the same row
             row.querySelectorAll('.vote-checkbox').forEach(cb => {
-                if (cb !== checkbox) cb.checked = false;
+                if (cb !== checkbox) {
+                    cb.checked = false;
+                    cb.closest('td').classList.remove('vote-selected');
+                }
             });
+            // Add selected class to the checked cell
+            cell.classList.add('vote-selected');
+        } else {
+            // Remove selected class when unchecking
+            cell.classList.remove('vote-selected');
         }
     };
 
@@ -56,19 +70,33 @@ document.addEventListener('DOMContentLoaded', () => {
             tbody.innerHTML = hosts.map(host => `
                 <tr>
                     <td>${host}</td>
-                    <td class="text-center">
-                        <input type="checkbox" class="vote-checkbox" data-host="${host}" data-houseguest="1">
+                    <td class="text-center vote-cell" data-host="${host}" data-houseguest="1">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" class="vote-checkbox" data-host="${host}" data-houseguest="1" id="vote-${host}-1">
+                            <label class="custom-checkbox" for="vote-${host}-1"></label>
+                        </div>
                     </td>
-                    <td class="text-center">
-                        <input type="checkbox" class="vote-checkbox" data-host="${host}" data-houseguest="2">
+                    <td class="text-center vote-cell" data-host="${host}" data-houseguest="2">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" class="vote-checkbox" data-host="${host}" data-houseguest="2" id="vote-${host}-2">
+                            <label class="custom-checkbox" for="vote-${host}-2"></label>
+                        </div>
                     </td>
                 </tr>
             `).join('');
 
-            // Reattach vote checkbox event listeners
-            table.querySelectorAll('.vote-checkbox').forEach(checkbox => {
-                checkbox.addEventListener('change', (e) => {
-                    handleVoteSelection(e.target, e.target.closest('tr'));
+            // Add click handlers for cells and checkboxes
+            table.querySelectorAll('.vote-cell').forEach(cell => {
+                cell.addEventListener('click', (e) => {
+                    if (e.target.type !== 'checkbox') {
+                        handleVoteSelection(cell, cell.closest('tr'));
+                    }
+                });
+
+                const checkbox = cell.querySelector('.vote-checkbox');
+                checkbox.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    handleVoteSelection(checkbox, checkbox.closest('tr'));
                 });
             });
         });
@@ -165,11 +193,17 @@ document.addEventListener('DOMContentLoaded', () => {
                         ${hosts.map(host => `
                             <tr>
                                 <td>${host}</td>
-                                <td class="text-center">
-                                    <input type="checkbox" class="vote-checkbox" data-host="${host}" data-houseguest="1">
+                                <td class="text-center vote-cell" data-host="${host}" data-houseguest="1">
+                                    <div class="checkbox-wrapper">
+                                        <input type="checkbox" class="vote-checkbox" data-host="${host}" data-houseguest="1" id="vote-${host}-1">
+                                        <label class="custom-checkbox" for="vote-${host}-1"></label>
+                                    </div>
                                 </td>
-                                <td class="text-center">
-                                    <input type="checkbox" class="vote-checkbox" data-host="${host}" data-houseguest="2">
+                                <td class="text-center vote-cell" data-host="${host}" data-houseguest="2">
+                                    <div class="checkbox-wrapper">
+                                        <input type="checkbox" class="vote-checkbox" data-host="${host}" data-houseguest="2" id="vote-${host}-2">
+                                        <label class="custom-checkbox" for="vote-${host}-2"></label>
+                                    </div>
                                 </td>
                             </tr>
                         `).join('')}
@@ -184,10 +218,18 @@ document.addEventListener('DOMContentLoaded', () => {
             updateMatchupNumbers();
         });
 
-        // Add vote checkbox event listeners
-        matchupDiv.querySelectorAll('.vote-checkbox').forEach(checkbox => {
-            checkbox.addEventListener('change', (e) => {
-                handleVoteSelection(e.target, e.target.closest('tr'));
+        // Add click handlers for cells and checkboxes
+        matchupDiv.querySelectorAll('.vote-cell').forEach(cell => {
+            cell.addEventListener('click', (e) => {
+                if (e.target.type !== 'checkbox' && !e.target.classList.contains('custom-checkbox')) {
+                    handleVoteSelection(cell, cell.closest('tr'));
+                }
+            });
+
+            const checkbox = cell.querySelector('.vote-checkbox');
+            checkbox.addEventListener('click', (e) => {
+                e.stopPropagation();
+                handleVoteSelection(checkbox, checkbox.closest('tr'));
             });
         });
 
