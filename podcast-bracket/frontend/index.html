@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Podcast Bracket Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex justify-between">
+                <div class="flex space-x-4">
+                    <!-- Logo -->
+                    <div>
+                        <a href="index.html" class="flex items-center py-5 px-2 text-gray-900 border-b-2 border-blue-500">
+                            <span class="font-bold text-xl">Podcast Bracket</span>
+                        </a>
+                    </div>
+                    
+                    <!-- Primary Nav -->
+                    <div class="hidden md:flex items-center space-x-1">
+                        <a href="bracket.html" class="py-5 px-3 text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-md transition-colors duration-200">Bracket</a>
+                        <a href="episodes.html" class="py-5 px-3 text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-md transition-colors duration-200">Episodes</a>
+                        <a href="input.html" class="py-5 px-3 text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-md transition-colors duration-200">Add Episode</a>
+                    </div>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button class="mobile-menu-button p-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500">
+                        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile menu -->
+        <div class="mobile-menu hidden md:hidden">
+            <a href="bracket.html" class="block py-2 px-4 text-sm hover:bg-gray-100">Bracket</a>
+            <a href="episodes.html" class="block py-2 px-4 text-sm hover:bg-gray-100">Episodes</a>
+            <a href="input.html" class="block py-2 px-4 text-sm hover:bg-gray-100">Add Episode</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="bg-white border-b">
+        <div class="max-w-6xl mx-auto px-4 py-16 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Podcast Bracket Tracker</h1>
+            <p class="text-xl text-gray-600 mb-8">Track and visualize your podcast bracket competition</p>
+            <div class="flex justify-center space-x-4">
+                <a href="bracket.html" class="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition-colors duration-200">
+                    View Bracket
+                </a>
+                <a href="input.html" class="bg-gray-800 text-white px-6 py-3 rounded-md hover:bg-gray-900 transition-colors duration-200">
+                    Add Episode
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <main class="flex-grow max-w-6xl mx-auto px-4 py-12">
+        <!-- Quick Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <div class="bg-white rounded-lg shadow-lg p-6 text-center">
+                <div class="text-3xl font-bold text-blue-600 mb-2">16</div>
+                <div class="text-gray-600">Contestants</div>
+            </div>
+            <div class="bg-white rounded-lg shadow-lg p-6 text-center">
+                <div class="text-3xl font-bold text-blue-600 mb-2">4</div>
+                <div class="text-gray-600">Rounds</div>
+            </div>
+            <div class="bg-white rounded-lg shadow-lg p-6 text-center">
+                <div class="text-3xl font-bold text-blue-600 mb-2">8</div>
+                <div class="text-gray-600">Episodes</div>
+            </div>
+        </div>
+
+        <!-- Quick Navigation Cards -->
+        <h2 class="text-2xl font-bold mb-6">Quick Actions</h2>
+        <div class="grid md:grid-cols-3 gap-6">
+            <div class="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow duration-200">
+                <div class="flex items-start justify-between mb-4">
+                    <h3 class="text-xl font-bold">Tournament Bracket</h3>
+                    <span class="text-blue-600">→</span>
+                </div>
+                <p class="text-gray-600 mb-4">View the current tournament standings and track player progress through each round.</p>
+                <a href="bracket.html" class="text-blue-600 hover:text-blue-700 font-medium">View Bracket</a>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow duration-200">
+                <div class="flex items-start justify-between mb-4">
+                    <h3 class="text-xl font-bold">Episode List</h3>
+                    <span class="text-blue-600">→</span>
+                </div>
+                <p class="text-gray-600 mb-4">Browse all podcast episodes, view matchups, and access YouTube links.</p>
+                <a href="episodes.html" class="text-blue-600 hover:text-blue-700 font-medium">View Episodes</a>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow duration-200">
+                <div class="flex items-start justify-between mb-4">
+                    <h3 class="text-xl font-bold">Add New Episode</h3>
+                    <span class="text-blue-600">→</span>
+                </div>
+                <p class="text-gray-600 mb-4">Submit details for a new podcast episode and update the bracket.</p>
+                <a href="input.html" class="text-blue-600 hover:text-blue-700 font-medium">Add Episode</a>
+            </div>
+        </div>
+
+        <!-- Latest Updates -->
+        <div class="mt-12">
+            <h2 class="text-2xl font-bold mb-6">Latest Updates</h2>
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <div class="space-y-4">
+                    <div class="flex items-center gap-4">
+                        <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                        <div>
+                            <p class="font-medium">Round 2 completed!</p>
+                            <p class="text-sm text-gray-600">8 contestants move on to the quarterfinals</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                        <div>
+                            <p class="font-medium">New episode added</p>
+                            <p class="text-sm text-gray-600">Episode 8: The Quarterfinals Begin</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white shadow-lg mt-auto">
+        <div class="max-w-6xl mx-auto px-4 py-6">
+            <p class="text-center text-gray-600">Podcast Bracket Tracker - Track your tournament progress</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+</body>
+</html>

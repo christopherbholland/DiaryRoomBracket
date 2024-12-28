@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bracket - Podcast Bracket Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex justify-between">
+                <div class="flex space-x-4">
+                    <!-- Logo -->
+                    <div>
+                        <a href="index.html" class="flex items-center py-5 px-2 text-gray-700">
+                            <span class="font-bold text-xl">Podcast Bracket</span>
+                        </a>
+                    </div>
+                    
+                    <!-- Primary Nav -->
+                    <div class="hidden md:flex items-center space-x-1">
+                        <a href="bracket.html" class="py-5 px-3 text-gray-900 border-b-2 border-blue-500">Bracket</a>
+                        <a href="episodes.html" class="py-5 px-3 text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-md transition-colors duration-200">Episodes</a>
+                        <a href="input.html" class="py-5 px-3 text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-md transition-colors duration-200">Add Episode</a>
+                    </div>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button class="mobile-menu-button p-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500">
+                        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile menu -->
+        <div class="mobile-menu hidden md:hidden">
+            <a href="bracket.html" class="block py-2 px-4 text-sm bg-gray-100">Bracket</a>
+            <a href="episodes.html" class="block py-2 px-4 text-sm hover:bg-gray-100">Episodes</a>
+            <a href="input.html" class="block py-2 px-4 text-sm hover:bg-gray-100">Add Episode</a>
+        </div>
+    </nav>
+
+    <!-- Content -->
+    <main class="flex-grow max-w-6xl mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold mb-6">Tournament Bracket</h1>
+        
+        <!-- Bracket Container -->
+        <div class="bg-white rounded-lg shadow-lg p-6 overflow-x-auto">
+            <div class="flex space-x-8 min-w-max">
+                <!-- Round 1 -->
+                <div class="w-64">
+                    <h2 class="text-xl font-bold mb-4">Round 1</h2>
+                    <div class="space-y-4">
+                        <!-- Matchup 1 -->
+                        <div class="bg-white rounded-lg shadow p-4 border border-gray-200">
+                            <div class="player-card winner">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium">Player 1</span>
+                                    <span class="text-green-600 font-medium">3 votes</span>
+                                </div>
+                                <div class="text-sm text-gray-600 mt-1">
+                                    Season: BB10 • HOH: 2 • Veto: 1
+                                </div>
+                            </div>
+                            <div class="h-px bg-gray-200 my-2"></div>
+                            <div class="player-card">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium">Player 2</span>
+                                    <span class="text-gray-600">1 vote</span>
+                                </div>
+                                <div class="player-stats">
+                                    Season: BB12 • HOH: 1 • Veto: 2
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Matchup 2 -->
+                        <div class="matchup-card">
+                            <div class="player-card winner">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium">Player 3</span>
+                                    <span class="text-green-600 font-medium">4 votes</span>
+                                </div>
+                                <div class="player-stats">
+                                    Season: BB14 • HOH: 3 • Veto: 2
+                                </div>
+                            </div>
+                            <div class="h-px bg-gray-200 my-2"></div>
+                            <div class="player-card">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium">Player 4</span>
+                                    <span class="text-gray-600">0 votes</span>
+                                </div>
+                                <div class="player-stats">
+                                    Season: BB16 • HOH: 0 • Veto: 1
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Round 2 -->
+                <div class="w-64">
+                    <h2 class="text-xl font-bold mb-4">Round 2</h2>
+                    <div class="space-y-4">
+                        <!-- Future matchups will be populated here -->
+                        <div class="matchup-card opacity-50">
+                            <div class="text-center py-8 text-gray-500">
+                                Waiting for Round 1 winners
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Final Round -->
+                <div class="w-64">
+                    <h2 class="text-xl font-bold mb-4">Finals</h2>
+                    <div class="space-y-4">
+                        <!-- Finals matchup placeholder -->
+                        <div class="matchup-card opacity-50">
+                            <div class="text-center py-8 text-gray-500">
+                                Waiting for finalists
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Legend -->
+        <div class="mt-6 bg-white rounded-lg shadow-lg p-4">
+            <h3 class="font-bold mb-2">Legend</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="flex items-center">
+                    <div class="w-4 h-4 bg-green-500 rounded mr-2"></div>
+                    <span>Winner</span>
+                </div>
+                <div class="flex items-center">
+                    <div class="w-4 h-4 bg-gray-200 rounded mr-2"></div>
+                    <span>Pending Match</span>
+                </div>
+                <div class="flex items-center">
+                    <div class="w-4 h-4 border-2 border-gray-300 rounded mr-2"></div>
+                    <span>Not Started</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white shadow-lg mt-auto">
+        <div class="max-w-6xl mx-auto px-4 py-6">
+            <p class="text-center text-gray-600">Podcast Bracket Tracker - Track your tournament progress</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+</body>
+</html>

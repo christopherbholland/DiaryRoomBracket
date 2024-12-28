@@ -1,0 +1,61 @@
+/* Custom styles beyond Tailwind */
+
+/* Since we're using Tailwind via CDN, we'll use utility classes directly */
+
+/* Add these classes to your HTML elements instead of using the previous @apply syntax */
+
+/* For matchup-card, add these classes:
+   "bg-white rounded-lg shadow p-4 border border-gray-200" */
+
+/* For matchup-card.winner, add:
+   "border-green-500 border-2" */
+
+/* For player-stats, add:
+   "text-sm text-gray-600 mt-1" */
+
+/* For episode-card, add:
+   "bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow duration-200" */
+
+/* For youtube-button, add:
+   "bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors duration-200" */
+
+/* For form-input, add:
+   "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" */
+
+/* For form-label, add:
+   "block text-sm font-medium text-gray-700" */
+
+/* For form-section, add:
+   "space-y-4 mb-6" */
+
+/* Custom animations */
+.fade-in {
+    opacity: 0;
+    animation: fadeIn 0.3s ease-in forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Custom styles that can't be achieved with utility classes */
+.bracket-line {
+    position: relative;
+}
+
+.bracket-line::after {
+    content: '';
+    position: absolute;
+    right: -2rem;
+    top: 50%;
+    width: 2rem;
+    height: 2px;
+    background-color: #e5e7eb;
+}
