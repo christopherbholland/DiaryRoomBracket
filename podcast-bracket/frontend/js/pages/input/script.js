@@ -6,87 +6,173 @@ document.addEventListener('DOMContentLoaded', () => {
     const matchupsContainer = document.getElementById('matchupsContainer');
 
     const defaultHosts = ['Aman', 'Matt'];
-    let hosts = [...defaultHosts];
-    let matchupCounter = 0;
+    let hosts = [...defaultHosts]; // Start with default hosts
+    const addThreeMatchupsBtn = document.getElementById('addThreeMatchupsBtn');
+
+    // Handle vote checkbox selection
+    const handleVoteSelection = (checkbox, row) => {
+        if (checkbox.checked) {
+            // Uncheck the other checkbox in the same row
+            row.querySelectorAll('.vote-checkbox').forEach(cb => {
+                if (cb !== checkbox) cb.checked = false;
+            });
+        }
+    };
 
     // Render initial hosts
     const renderHosts = () => {
         hostsList.innerHTML = '';
         hosts.forEach((host, index) => {
             const hostDiv = document.createElement('div');
-            hostDiv.className = 'flex gap-2 items-center';
             hostDiv.innerHTML = `
-                <input type="text" value="${host}" class="flex-1 rounded-md border-gray-300 shadow-sm focus:border-blue-500" required>
-                ${index >= 2
-                    ? '<button type="button" class="text-red-600 hover:text-red-700 px-2">Remove</button>'
-                    : ''}
+                <input type="text" value="${host}" class="host-input" required>
+                <button type="button" class="remove-host" aria-label="Remove host">×</button>
             `;
-            if (index >= 2) {
-                hostDiv.querySelector('button').addEventListener('click', () => {
-                    hosts.splice(index, 1);
-                    renderHosts();
-                });
-            }
+            hostDiv.querySelector('.remove-host').addEventListener('click', () => {
+                hosts.splice(index, 1);
+                renderHosts();
+                updateMatchupTables();
+                updateAddMatchupsButtonState();
+            });
             hostDiv.querySelector('input').addEventListener('input', (e) => {
                 hosts[index] = e.target.value;
+                updateMatchupTables();
             });
             hostsList.appendChild(hostDiv);
         });
     };
 
+    // Update matchup numbers
+    const updateMatchupNumbers = () => {
+        matchupsContainer.querySelectorAll('.matchup').forEach((matchup, index) => {
+            matchup.querySelector('.matchup-number').textContent = `Matchup ${index + 1}`;
+        });
+    };
+
+    // Update all vote tables
+    const updateMatchupTables = () => {
+        matchupsContainer.querySelectorAll('.vote-table').forEach(table => {
+            const tbody = table.querySelector('tbody');
+            tbody.innerHTML = hosts.map(host => `
+                <tr>
+                    <td>${host}</td>
+                    <td class="text-center">
+                        <input type="checkbox" class="vote-checkbox" data-host="${host}" data-houseguest="1">
+                    </td>
+                    <td class="text-center">
+                        <input type="checkbox" class="vote-checkbox" data-host="${host}" data-houseguest="2">
+                    </td>
+                </tr>
+            `).join('');
+
+            // Reattach vote checkbox event listeners
+            table.querySelectorAll('.vote-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', (e) => {
+                    handleVoteSelection(e.target, e.target.closest('tr'));
+                });
+            });
+        });
+    };
+
+    // Function to check if Add 3 Matchups should be enabled
+    const updateAddMatchupsButtonState = () => {
+        const hasHosts = hosts.length > 0;
+        addThreeMatchupsBtn.style.opacity = hasHosts ? '1' : '0.5';
+        addThreeMatchupsBtn.style.pointerEvents = hasHosts ? 'auto' : 'none';
+    };
+
     // Add a new host
-    addHostBtn.addEventListener('click', () => {
+    addHostBtn.addEventListener('click', (e) => {
+        e.preventDefault();
         hosts.push('');
         renderHosts();
+        updateMatchupTables();
+        updateAddMatchupsButtonState();
     });
 
     // Add a new matchup
-    addMatchupBtn.addEventListener('click', () => {
-        matchupCounter++;
+    addMatchupBtn.addEventListener('click', (e) => {
+        e.preventDefault();
         const matchupDiv = document.createElement('div');
-        matchupDiv.className = 'matchup bg-gray-50 p-4 rounded-lg shadow-sm space-y-4';
-        matchupDiv.dataset.matchupId = matchupCounter;
+        matchupDiv.className = 'matchup';
 
         matchupDiv.innerHTML = `
-            <div class="flex justify-between items-center">
-                <h3 class="font-medium text-lg">Matchup ${matchupCounter}</h3>
-                <button type="button" class="remove-matchup text-red-600 hover:text-red-700 text-sm">Remove Matchup</button>
+            <button type="button" class="remove-matchup" aria-label="Remove matchup">×</button>
+            <div class="matchup-header">
+                <h3 class="matchup-number">Matchup ${matchupsContainer.children.length + 1}</h3>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Houseguest 1</label>
-                    <input type="text" placeholder="Name" class="houseguest-name w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500" required>
+            <div class="houseguest-info">
+                <div class="houseguest-header">Houseguest 1</div>
+                <div class="main-row">
+                    <input type="text" class="houseguest-name" placeholder="Name" required>
+                    <input type="text" class="season" placeholder="Season" required>
                 </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Houseguest 2</label>
-                    <input type="text" placeholder="Name" class="houseguest-name w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500" required>
+                <div class="stats-row">
+                    <div>
+                        <label>HOH</label>
+                        <input type="number" min="0" value="0" required>
+                    </div>
+                    <div>
+                        <label>Veto</label>
+                        <input type="number" min="0" value="0" required>
+                    </div>
+                    <div>
+                        <label>Nom</label>
+                        <input type="number" min="0" value="0" required>
+                    </div>
+                    <div>
+                        <label>Placement</label>
+                        <input type="text" class="placement" required>
+                    </div>
                 </div>
             </div>
-            <div class="vote-table mt-4">
-                <h4 class="text-sm font-medium text-gray-700 mb-2">Vote Table</h4>
-                <table class="w-full border-collapse border border-gray-300">
+            <div class="houseguest-info">
+                <div class="houseguest-header">Houseguest 2</div>
+                <div class="main-row">
+                    <input type="text" class="houseguest-name" placeholder="Name" required>
+                    <input type="text" class="season" placeholder="Season" required>
+                </div>
+                <div class="stats-row">
+                    <div>
+                        <label>HOH</label>
+                        <input type="number" min="0" value="0" required>
+                    </div>
+                    <div>
+                        <label>Veto</label>
+                        <input type="number" min="0" value="0" required>
+                    </div>
+                    <div>
+                        <label>Nom</label>
+                        <input type="number" min="0" value="0" required>
+                    </div>
+                    <div>
+                        <label>Placement</label>
+                        <input type="text" class="placement" required>
+                    </div>
+                </div>
+            </div>
+            <div class="vote-table">
+                <h4>Vote Table</h4>
+                <table>
                     <thead>
                         <tr>
-                            <th class="border border-gray-300 px-4 py-2">Host</th>
-                            <th class="border border-gray-300 px-4 py-2">Houseguest 1</th>
-                            <th class="border border-gray-300 px-4 py-2">Houseguest 2</th>
+                            <th>Host</th>
+                            <th>Houseguest 1</th>
+                            <th>Houseguest 2</th>
                         </tr>
                     </thead>
                     <tbody>
-                        ${hosts
-                            .map(
-                                (host) => `
+                        ${hosts.map(host => `
                             <tr>
-                                <td class="border border-gray-300 px-4 py-2">${host}</td>
-                                <td class="border border-gray-300 px-4 py-2 text-center">
+                                <td>${host}</td>
+                                <td class="text-center">
                                     <input type="checkbox" class="vote-checkbox" data-host="${host}" data-houseguest="1">
                                 </td>
-                                <td class="border border-gray-300 px-4 py-2 text-center">
+                                <td class="text-center">
                                     <input type="checkbox" class="vote-checkbox" data-host="${host}" data-houseguest="2">
                                 </td>
-                            </tr>`
-                            )
-                            .join('')}
+                            </tr>
+                        `).join('')}
                     </tbody>
                 </table>
             </div>
@@ -95,6 +181,14 @@ document.addEventListener('DOMContentLoaded', () => {
         // Add event to remove the matchup
         matchupDiv.querySelector('.remove-matchup').addEventListener('click', () => {
             matchupDiv.remove();
+            updateMatchupNumbers();
+        });
+
+        // Add vote checkbox event listeners
+        matchupDiv.querySelectorAll('.vote-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', (e) => {
+                handleVoteSelection(e.target, e.target.closest('tr'));
+            });
         });
 
         matchupsContainer.appendChild(matchupDiv);
@@ -104,41 +198,91 @@ document.addEventListener('DOMContentLoaded', () => {
     form.addEventListener('submit', (e) => {
         e.preventDefault();
 
+        // Validate that there's at least one matchup
+        if (matchupsContainer.children.length === 0) {
+            alert('Please add at least one matchup');
+            return;
+        }
+
         const episodeData = {
             title: form.title.value,
-            episodeNumber: form.episode_number.value,
+            episodeNumber: parseInt(form.episode_number.value),
             youtubeLink: form.youtube_link.value,
-            hosts,
-            matchups: [],
+            hosts: [...hosts],
+            matchups: []
         };
 
+        // Collect and validate matchup data
+        let isValid = true;
         matchupsContainer.querySelectorAll('.matchup').forEach((matchupDiv) => {
-            const houseguestNames = matchupDiv.querySelectorAll('.houseguest-name');
+            const houseguestInputs = matchupDiv.querySelectorAll('.houseguest-name');
+            const matchupNumber = matchupDiv.querySelector('.matchup-number').textContent.split(' ')[1];
+            
+            // Validate houseguest names
+            if (!houseguestInputs[0].value || !houseguestInputs[1].value) {
+                alert(`Please enter both houseguest names for Matchup ${matchupNumber}`);
+                isValid = false;
+                return;
+            }
+
             const votes = [];
             matchupDiv.querySelectorAll('.vote-checkbox').forEach((checkbox) => {
                 if (checkbox.checked) {
                     votes.push({
                         host: checkbox.dataset.host,
-                        houseguest: checkbox.dataset.houseguest,
+                        houseguest: parseInt(checkbox.dataset.houseguest)
                     });
                 }
             });
 
+            // Validate that each host has voted
+            const hostVotes = new Set(votes.map(v => v.host));
+            if (hostVotes.size !== hosts.length) {
+                alert(`Please ensure all hosts have voted in Matchup ${matchupNumber}`);
+                isValid = false;
+                return;
+            }
+
             episodeData.matchups.push({
-                houseguest1: houseguestNames[0].value,
-                houseguest2: houseguestNames[1].value,
-                votes,
+                houseguest1: houseguestInputs[0].value,
+                houseguest2: houseguestInputs[1].value,
+                votes
             });
         });
 
+        if (!isValid) return;
+
+        // Here you would typically send the data to your backend
         console.log('Episode Data:', episodeData);
-        alert('Episode submitted successfully!');
+
+        // Reset the form
         form.reset();
         hosts = [...defaultHosts];
         renderHosts();
         matchupsContainer.innerHTML = '';
+        
+        // Show success message
+        alert('Episode submitted successfully!');
     });
 
-    // Initialize
+    // Add three matchups at once
+    addThreeMatchupsBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (hosts.length === 0) {
+            alert('Please add at least one host before adding matchups');
+            return;
+        }
+        
+        // Clear existing matchups
+        matchupsContainer.innerHTML = '';
+        
+        // Add exactly three matchups
+        for (let i = 0; i < 3; i++) {
+            addMatchupBtn.click();
+        }
+    });
+
+    // Initialize the form
     renderHosts();
+    updateAddMatchupsButtonState();
 });
