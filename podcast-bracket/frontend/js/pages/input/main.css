@@ -61,6 +61,12 @@ body {
    gap: 0.5rem;
  }
  
+ /* A small style for required asterisks */
+ .required-asterisk {
+   color: #ff4d4d; /* or something to highlight it's required */
+   margin-left: 2px;
+ }
+ 
  /* Houseguest Layout */
  .houseguest-info {
    margin-bottom: 1.5rem;
@@ -226,12 +232,11 @@ body {
  
  /* Slightly wider cells */
  .vote-cell {
-   width: 60px; /* prevent wrapping of “1” and “2” */
+   width: 60px; /* prevent wrapping of "1" and "2" */
    cursor: pointer;
    text-align: center;
    padding: 0.44rem;
-   /* Make cell itself focusable for keyboard toggling */
-   outline: none;
+   outline: none; /* remove default focus ring, define our own below */
  }
  
  .vote-cell:focus {
@@ -252,17 +257,16 @@ body {
    justify-content: center;
    align-items: center;
    position: relative;
-   pointer-events: none; /* Let the parent (vote-cell) handle clicks fully */
+   pointer-events: none; /* let the parent vote-cell handle clicks */
  }
  
- /* Keep checkbox in tab order if you want, or remove if you prefer only the cell is focusable */
- /* Here we remove from tab flow so the cell itself is the interactive element */
+ /* remove from tab order with tabindex="-1" */
  .vote-checkbox {
    position: absolute;
    width: 0;
    height: 0;
    margin: 0;
-   pointer-events: none; /* All clicks handled by the cell */
+   pointer-events: none;
    opacity: 0;
  }
  

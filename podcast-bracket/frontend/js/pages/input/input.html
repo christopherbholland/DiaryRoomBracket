@@ -18,22 +18,24 @@
           <h2>Episode Details</h2>
           <div class="episode-details-grid">
             <div>
-              <label for="title">Episode Title</label>
+              <!-- Episode Title is required -->
+              <label for="title">Episode Title <span class="required-asterisk">*</span></label>
               <input type="text" id="title" name="title" required />
             </div>
             <div>
+              <!-- Episode # is no longer required -->
               <label for="episode_number">Episode #</label>
               <input
                 type="number"
                 id="episode_number"
                 name="episode_number"
-                required
                 min="1"
               />
             </div>
             <div>
+              <!-- YouTube Link is no longer required -->
               <label for="youtube_link">YouTube Link</label>
-              <input type="url" id="youtube_link" name="youtube_link" required />
+              <input type="url" id="youtube_link" name="youtube_link" />
             </div>
           </div>
         </section>
@@ -64,7 +66,7 @@
 
       <!-- Submit Button -->
       <div class="action-buttons">
-        <!-- Changed to type="button" so Enter doesn't trigger submission. -->
+        <!-- Use type="button" so Enter doesn't trigger submission automatically -->
         <button type="button" id="submitEpisodeBtn">Submit Episode</button>
       </div>
     </form>
