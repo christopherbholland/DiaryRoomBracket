@@ -10,25 +10,24 @@ document.addEventListener('DOMContentLoaded', () => {
     let hosts = [...defaultHosts]; // Start with default hosts
 
     // Handle vote selection
-    const handleVoteSelection = (element, row) => {
-        const checkbox = element.type === 'checkbox' ? element : element.querySelector('.vote-checkbox');
-        const cell = checkbox.closest('td');
-
-        // Toggle the checkbox
+    const handleVoteSelection = (cell) => {
+        const checkbox = cell.querySelector('.vote-checkbox');
+        const row = cell.closest('tr');
+        
+        // Toggle the state
         checkbox.checked = !checkbox.checked;
-
+        
+        // Update cell class and uncheck others
         if (checkbox.checked) {
-            // Uncheck the other checkbox in the same row
-            row.querySelectorAll('.vote-checkbox').forEach(cb => {
-                if (cb !== checkbox) {
-                    cb.checked = false;
-                    cb.closest('td').classList.remove('vote-selected');
+            // Uncheck other cells in same row
+            row.querySelectorAll('.vote-cell').forEach(otherCell => {
+                if (otherCell !== cell) {
+                    otherCell.classList.remove('vote-selected');
+                    otherCell.querySelector('.vote-checkbox').checked = false;
                 }
             });
-            // Add selected class to the checked cell
             cell.classList.add('vote-selected');
         } else {
-            // Remove selected class when unchecking
             cell.classList.remove('vote-selected');
         }
     };
@@ -70,34 +69,24 @@ document.addEventListener('DOMContentLoaded', () => {
             tbody.innerHTML = hosts.map(host => `
                 <tr>
                     <td>${host}</td>
-                    <td class="text-center vote-cell" data-host="${host}" data-houseguest="1">
+                    <td class="vote-cell" data-host="${host}" data-houseguest="1">
                         <div class="checkbox-wrapper">
-                            <input type="checkbox" class="vote-checkbox" data-host="${host}" data-houseguest="1" id="vote-${host}-1">
-                            <label class="custom-checkbox" for="vote-${host}-1"></label>
+                            <input type="checkbox" class="vote-checkbox">
+                            <div class="custom-checkbox"></div>
                         </div>
                     </td>
-                    <td class="text-center vote-cell" data-host="${host}" data-houseguest="2">
+                    <td class="vote-cell" data-host="${host}" data-houseguest="2">
                         <div class="checkbox-wrapper">
-                            <input type="checkbox" class="vote-checkbox" data-host="${host}" data-houseguest="2" id="vote-${host}-2">
-                            <label class="custom-checkbox" for="vote-${host}-2"></label>
+                            <input type="checkbox" class="vote-checkbox">
+                            <div class="custom-checkbox"></div>
                         </div>
                     </td>
                 </tr>
             `).join('');
 
-            // Add click handlers for cells and checkboxes
+            // Add click handlers
             table.querySelectorAll('.vote-cell').forEach(cell => {
-                cell.addEventListener('click', (e) => {
-                    if (e.target.type !== 'checkbox') {
-                        handleVoteSelection(cell, cell.closest('tr'));
-                    }
-                });
-
-                const checkbox = cell.querySelector('.vote-checkbox');
-                checkbox.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    handleVoteSelection(checkbox, checkbox.closest('tr'));
-                });
+                cell.addEventListener('click', () => handleVoteSelection(cell));
             });
         });
     };
@@ -193,16 +182,16 @@ document.addEventListener('DOMContentLoaded', () => {
                         ${hosts.map(host => `
                             <tr>
                                 <td>${host}</td>
-                                <td class="text-center vote-cell" data-host="${host}" data-houseguest="1">
+                                <td class="vote-cell" data-host="${host}" data-houseguest="1">
                                     <div class="checkbox-wrapper">
-                                        <input type="checkbox" class="vote-checkbox" data-host="${host}" data-houseguest="1" id="vote-${host}-1">
-                                        <label class="custom-checkbox" for="vote-${host}-1"></label>
+                                        <input type="checkbox" class="vote-checkbox">
+                                        <div class="custom-checkbox"></div>
                                     </div>
                                 </td>
-                                <td class="text-center vote-cell" data-host="${host}" data-houseguest="2">
+                                <td class="vote-cell" data-host="${host}" data-houseguest="2">
                                     <div class="checkbox-wrapper">
-                                        <input type="checkbox" class="vote-checkbox" data-host="${host}" data-houseguest="2" id="vote-${host}-2">
-                                        <label class="custom-checkbox" for="vote-${host}-2"></label>
+                                        <input type="checkbox" class="vote-checkbox">
+                                        <div class="custom-checkbox"></div>
                                     </div>
                                 </td>
                             </tr>
@@ -218,19 +207,9 @@ document.addEventListener('DOMContentLoaded', () => {
             updateMatchupNumbers();
         });
 
-        // Add click handlers for cells and checkboxes
+        // Add click handlers for vote cells
         matchupDiv.querySelectorAll('.vote-cell').forEach(cell => {
-            cell.addEventListener('click', (e) => {
-                if (e.target.type !== 'checkbox' && !e.target.classList.contains('custom-checkbox')) {
-                    handleVoteSelection(cell, cell.closest('tr'));
-                }
-            });
-
-            const checkbox = cell.querySelector('.vote-checkbox');
-            checkbox.addEventListener('click', (e) => {
-                e.stopPropagation();
-                handleVoteSelection(checkbox, checkbox.closest('tr'));
-            });
+            cell.addEventListener('click', () => handleVoteSelection(cell));
         });
 
         matchupsContainer.appendChild(matchupDiv);
@@ -271,8 +250,8 @@ document.addEventListener('DOMContentLoaded', () => {
             matchupDiv.querySelectorAll('.vote-checkbox').forEach((checkbox) => {
                 if (checkbox.checked) {
                     votes.push({
-                        host: checkbox.dataset.host,
-                        houseguest: parseInt(checkbox.dataset.houseguest)
+                        host: checkbox.closest('tr').querySelector('td').textContent,
+                        houseguest: parseInt(checkbox.closest('.vote-cell').dataset.houseguest)
                     });
                 }
             });
@@ -286,8 +265,22 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             episodeData.matchups.push({
-                houseguest1: houseguestInputs[0].value,
-                houseguest2: houseguestInputs[1].value,
+                houseguest1: {
+                    name: houseguestInputs[0].value,
+                    season: matchupDiv.querySelector('.houseguest-info:nth-child(2) .season').value,
+                    hohWins: parseInt(matchupDiv.querySelector('.houseguest-info:nth-child(2) input[type="number"]:nth-of-type(1)').value),
+                    vetoWins: parseInt(matchupDiv.querySelector('.houseguest-info:nth-child(2) input[type="number"]:nth-of-type(2)').value),
+                    nominations: parseInt(matchupDiv.querySelector('.houseguest-info:nth-child(2) input[type="number"]:nth-of-type(3)').value),
+                    placement: matchupDiv.querySelector('.houseguest-info:nth-child(2) .placement').value
+                },
+                houseguest2: {
+                    name: houseguestInputs[1].value,
+                    season: matchupDiv.querySelector('.houseguest-info:nth-child(3) .season').value,
+                    hohWins: parseInt(matchupDiv.querySelector('.houseguest-info:nth-child(3) input[type="number"]:nth-of-type(1)').value),
+                    vetoWins: parseInt(matchupDiv.querySelector('.houseguest-info:nth-child(3) input[type="number"]:nth-of-type(2)').value),
+                    nominations: parseInt(matchupDiv.querySelector('.houseguest-info:nth-child(3) input[type="number"]:nth-of-type(3)').value),
+                    placement: matchupDiv.querySelector('.houseguest-info:nth-child(3) .placement').value
+                },
                 votes
             });
         });
