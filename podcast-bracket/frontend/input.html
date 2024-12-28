@@ -13,90 +13,62 @@
         <div class="max-w-6xl mx-auto px-4">
             <div class="flex justify-between">
                 <div class="flex space-x-4">
-                    <!-- Logo -->
                     <div>
                         <a href="index.html" class="flex items-center py-5 px-2 text-gray-700">
                             <span class="font-bold text-xl">Podcast Bracket</span>
                         </a>
                     </div>
-                    
-                    <!-- Primary Nav -->
                     <div class="hidden md:flex items-center space-x-1">
                         <a href="bracket.html" class="py-5 px-3 text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-md transition-colors duration-200">Bracket</a>
                         <a href="episodes.html" class="py-5 px-3 text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-md transition-colors duration-200">Episodes</a>
                         <a href="input.html" class="py-5 px-3 text-gray-900 border-b-2 border-blue-500">Add Episode</a>
                     </div>
                 </div>
-
-                <!-- Mobile menu button -->
-                <div class="md:hidden flex items-center">
-                    <button class="mobile-menu-button p-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500">
-                        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
-                    </button>
-                </div>
             </div>
-        </div>
-
-        <!-- Mobile menu -->
-        <div class="mobile-menu hidden md:hidden">
-            <a href="bracket.html" class="block py-2 px-4 text-sm hover:bg-gray-100">Bracket</a>
-            <a href="episodes.html" class="block py-2 px-4 text-sm hover:bg-gray-100">Episodes</a>
-            <a href="input.html" class="block py-2 px-4 text-sm bg-gray-100">Add Episode</a>
         </div>
     </nav>
 
-    <!-- Content -->
+    <!-- Main Content -->
     <main class="flex-grow max-w-6xl mx-auto px-4 py-8">
         <h1 class="text-3xl font-bold mb-6">Add New Episode</h1>
         
-        <!-- Episode Input Form -->
-        <form id="episodeForm" class="bg-white rounded-lg shadow-lg p-6">
-            <!-- Basic Episode Info -->
-            <div class="space-y-4 mb-6">
+        <form id="episodeForm" class="bg-white rounded-lg shadow-lg p-6 space-y-8">
+            <!-- Episode Details -->
+            <section>
                 <h2 class="text-xl font-semibold mb-4">Episode Details</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700" for="title">Episode Title</label>
+                        <label for="title" class="block text-sm font-medium text-gray-700">Episode Title</label>
                         <input type="text" id="title" name="title" required 
-                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" placeholder="Enter episode title">
+                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                     </div>
-                    
                     <div>
-                        <label class="form-label" for="episode_number">Episode Number</label>
-                        <input type="number" id="episode_number" name="episode_number" required 
-                               class="form-input" min="1">
+                        <label for="episode_number" class="block text-sm font-medium text-gray-700">Episode Number</label>
+                        <input type="number" id="episode_number" name="episode_number" required min="1"
+                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                     </div>
                 </div>
-                
-                <div class="mt-4">
-                    <label class="form-label" for="youtube_link">YouTube Link</label>
-                    <input type="url" id="youtube_link" name="youtube_link" required 
-                           class="form-input" placeholder="https://youtube.com/...">
-                </div>
-            </div>
+            </section>
 
-            <!-- Hosts and Guest -->
-            <div class="form-section">
-                <h2 class="text-xl font-semibold mb-4">Hosts & Guest</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="form-label" for="hosts">Hosts</label>
-                        <input type="text" id="hosts" name="hosts" required 
-                               class="form-input" placeholder="Host names (comma-separated)">
-                    </div>
-                    
-                    <div>
-                        <label class="form-label" for="guest">Special Guest</label>
-                        <input type="text" id="guest" name="guest" 
-                               class="form-input" placeholder="Guest name (optional)">
+            <!-- Hosts Section -->
+            <section>
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-semibold">Hosts</h2>
+                    <button type="button" id="addHostBtn" 
+                            class="text-blue-600 hover:text-blue-700 text-sm font-medium">
+                        + Add Host
+                    </button>
+                </div>
+                <div id="hostsList" class="space-y-3">
+                    <div class="host-input flex gap-2">
+                        <input type="text" name="hosts[]" required placeholder="Enter host name"
+                               class="flex-1 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <!-- Matchups -->
-            <div class="form-section">
+            <!-- Matchups Section -->
+            <section>
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-xl font-semibold">Matchups</h2>
                     <button type="button" id="addMatchupBtn" 
@@ -104,45 +76,8 @@
                         + Add Matchup
                     </button>
                 </div>
-                
-                <div id="matchupsContainer" class="space-y-4">
-                    <!-- Matchup Template -->
-                    <div class="matchup-container bg-gray-50 rounded-lg p-4">
-                        <div class="flex justify-between items-center mb-3">
-                            <h3 class="font-medium">Matchup 1</h3>
-                            <button type="button" class="remove-matchup text-red-600 hover:text-red-700 text-sm">
-                                Remove
-                            </button>
-                        </div>
-                        
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <!-- Player 1 -->
-                            <div class="space-y-2">
-                                <label class="form-label">Player 1</label>
-                                <input type="text" name="matchup1_player1" required 
-                                       class="form-input" placeholder="Enter player name">
-                                <div class="flex items-center gap-2">
-                                    <label class="form-label text-sm">Votes:</label>
-                                    <input type="number" name="matchup1_votes1" required 
-                                           class="form-input w-20" min="0">
-                                </div>
-                            </div>
-                            
-                            <!-- Player 2 -->
-                            <div class="space-y-2">
-                                <label class="form-label">Player 2</label>
-                                <input type="text" name="matchup1_player2" required 
-                                       class="form-input" placeholder="Enter player name">
-                                <div class="flex items-center gap-2">
-                                    <label class="form-label text-sm">Votes:</label>
-                                    <input type="number" name="matchup1_votes2" required 
-                                           class="form-input w-20" min="0">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                <div id="matchupsContainer" class="space-y-4"></div>
+            </section>
 
             <!-- Submit Button -->
             <div class="mt-6">
@@ -161,47 +96,7 @@
         </div>
     </footer>
 
-    <!-- Scripts -->
-    <script src="js/main.js"></script>
-    <script>
-        // Additional form-specific JavaScript
-        document.addEventListener('DOMContentLoaded', () => {
-            const matchupsContainer = document.getElementById('matchupsContainer');
-            const addMatchupBtn = document.getElementById('addMatchupBtn');
-            let matchupCount = 1;
-
-            // Add new matchup
-            addMatchupBtn.addEventListener('click', () => {
-                matchupCount++;
-                const matchupTemplate = document.querySelector('.matchup-container').cloneNode(true);
-                
-                // Update IDs and names
-                matchupTemplate.querySelectorAll('input').forEach(input => {
-                    input.value = '';
-                    input.name = input.name.replace('1', matchupCount);
-                });
-                
-                // Update title
-                matchupTemplate.querySelector('h3').textContent = `Matchup ${matchupCount}`;
-                
-                // Add to container
-                matchupsContainer.appendChild(matchupTemplate);
-            });
-
-            // Remove matchup
-            matchupsContainer.addEventListener('click', (e) => {
-                if (e.target.classList.contains('remove-matchup')) {
-                    const matchup = e.target.closest('.matchup-container');
-                    if (matchupsContainer.children.length > 1) {
-                        matchup.remove();
-                        // Update remaining matchup numbers
-                        document.querySelectorAll('.matchup-container').forEach((container, index) => {
-                            container.querySelector('h3').textContent = `Matchup ${index + 1}`;
-                        });
-                    }
-                }
-            });
-        });
-    </script>
+    <!-- Script -->
+    <script src="js/pages/input/script.js"></script>
 </body>
 </html>
