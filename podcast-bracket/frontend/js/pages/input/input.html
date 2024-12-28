@@ -1,62 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Episode</title>
-    <link rel="stylesheet" href="main.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Add Episode</title>
+  <!-- Link to main.css -->
+  <link rel="stylesheet" href="main.css" />
 </head>
 <body>
-    <div class="form-container">
-        <h1>Add Episode</h1>
-        <form id="episodeForm">
-            <!-- Episode Info and Hosts Layout -->
-            <div class="flex gap-8 mb-8">
-                <!-- Episode Details -->
-                <section class="flex-1">
-                    <h2>Episode Details</h2>
-                    <div class="episode-details-grid">
-                        <div>
-                            <label for="title">Episode Title</label>
-                            <input type="text" id="title" name="title" required>
-                        </div>
-                        <div>
-                            <label for="episode_number">Episode #</label>
-                            <input type="number" id="episode_number" name="episode_number" required min="1">
-                        </div>
-                        <div>
-                            <label for="youtube_link">YouTube Link</label>
-                            <input type="url" id="youtube_link" name="youtube_link" required>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Hosts -->
-                <section class="flex-1">
-                    <h2>Hosts</h2>
-                    <div id="hostsList"></div>
-                    <a href="#" id="addHostBtn" class="add-host-link">+ Add Host</a>
-                </section>
+  <div class="form-container">
+    <h1>Add Episode</h1>
+    <form id="episodeForm">
+      <!-- Episode Info and Hosts Layout -->
+      <div class="flex gap-8 mb-8">
+        <!-- Episode Details -->
+        <section class="flex-1">
+          <h2>Episode Details</h2>
+          <div class="episode-details-grid">
+            <div>
+              <label for="title">Episode Title</label>
+              <input type="text" id="title" name="title" required />
             </div>
-
-            <!-- Matchups -->
-            <section>
-                <div class="section-header">
-                    <h2>Episode Matchups</h2>
-                    <div class="section-actions">
-                        <a href="#" id="addThreeMatchupsBtn" class="add-matchup-link">+ Add 3 Matchups</a>
-                        <a href="#" id="addMatchupBtn" class="add-matchup-link">+ Add Single Matchup</a>
-                    </div>
-                </div>
-                <div id="matchupsContainer"></div>
-            </section>
-
-            <!-- Submit Button -->
-            <div class="action-buttons">
-                <button type="submit">Submit Episode</button>
+            <div>
+              <label for="episode_number">Episode #</label>
+              <input
+                type="number"
+                id="episode_number"
+                name="episode_number"
+                required
+                min="1"
+              />
             </div>
-        </form>
-    </div>
-    <script src="script.js"></script>
+            <div>
+              <label for="youtube_link">YouTube Link</label>
+              <input type="url" id="youtube_link" name="youtube_link" required />
+            </div>
+          </div>
+        </section>
+
+        <!-- Hosts -->
+        <section class="flex-1">
+          <h2>Hosts</h2>
+          <div id="hostsList"></div>
+          <a href="#" id="addHostBtn" class="add-host-link">+ Add Host</a>
+        </section>
+      </div>
+
+      <!-- Matchups -->
+      <section>
+        <div class="section-header">
+          <h2>Episode Matchups</h2>
+          <div class="section-actions">
+            <a href="#" id="addThreeMatchupsBtn" class="add-matchup-link"
+              >+ Add 3 Matchups</a
+            >
+            <a href="#" id="addMatchupBtn" class="add-matchup-link"
+              >+ Add Single Matchup</a
+            >
+          </div>
+        </div>
+        <div id="matchupsContainer"></div>
+      </section>
+
+      <!-- Submit Button -->
+      <div class="action-buttons">
+        <!-- Changed to type="button" so Enter doesn't trigger submission. -->
+        <button type="button" id="submitEpisodeBtn">Submit Episode</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Link to script.js -->
+  <script src="script.js"></script>
 </body>
 </html>
