@@ -1,5 +1,5 @@
 // Import modules
-import { initializeNavigation } from './common/navigation.js';
+import { initializeNavigation } from '../common/navigation.js';
 
 // Import page-specific initializers
 // Note: We'll create these other files when we implement those pages
