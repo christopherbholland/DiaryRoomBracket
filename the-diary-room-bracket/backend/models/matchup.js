@@ -1,10 +1,14 @@
 const mongoose = require('mongoose');
 
-// Define the schema for a Matchup
 const matchupSchema = new mongoose.Schema({
-  episodes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Episode' }], // Array of episodes in the matchup
-  winner: { type: mongoose.Schema.Types.ObjectId, ref: 'Episode' }, // Reference to the winning Episode
+  houseguest1: { type: mongoose.Schema.Types.ObjectId, ref: 'Houseguest', required: true },
+  houseguest2: { type: mongoose.Schema.Types.ObjectId, ref: 'Houseguest', required: true },
+  votesForHG1: { type: Number, default: 0 },
+  votesForHG2: { type: Number, default: 0 },
+  votersForHG1: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Host' }],
+  votersForHG2: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Host' }],
+  winner: { type: mongoose.Schema.Types.ObjectId, ref: 'Houseguest' },
+  round: { type: Number, required: true },
 });
 
-// Export the Matchup model
 module.exports = mongoose.model('Matchup', matchupSchema);
