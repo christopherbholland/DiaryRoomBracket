@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Apollo Test</title>
+</head>
+<body>
+  <script src="https://www.unpkg.com/@apollo/client@3.8.8/dist/apollo.min.js"></script>
+  <script>
+    console.log('Available globals:', {
+      Apollo: typeof Apollo !== 'undefined',
+      apolloClient: typeof apolloClient !== 'undefined',
+      ApolloClient: typeof ApolloClient !== 'undefined'
+    });
+  </script>
+</body>
+</html>
