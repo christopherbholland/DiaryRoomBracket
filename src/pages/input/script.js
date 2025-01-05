@@ -360,6 +360,51 @@ document.addEventListener("DOMContentLoaded", () => {
     updateUI();
   });
 
+/******************************************************
+ * Submit Episode Data:
+ * Sends form data to the GraphQL backend.
+ *****************************************************/
+const submitEpisodeData = async (episodeData) => {
+  const query = `
+    mutation CreateEpisode($title: String!, $episodeNumber: Int, $youtubeLink: String, $hosts: [String!]!, $matchups: [MatchupInput!]!) {
+      createEpisode(
+        title: $title,
+        episodeNumber: $episodeNumber,
+        youtubeLink: $youtubeLink,
+        hosts: $hosts,
+        matchups: $matchups
+      ) {
+        id
+        title
+      }
+    }
+  `;
+
+  try {
+    const response = await client.request(query, {
+      title: episodeData.title,
+      episodeNumber: episodeData.episodeNumber,
+      youtubeLink: episodeData.youtubeLink,
+      hosts: episodeData.hosts,
+      matchups: episodeData.matchups.map(matchup => ({
+        houseguest1Id: matchup.houseguest1.name,
+        houseguest2Id: matchup.houseguest2.name,
+        votes: matchup.votes.map(vote => ({
+          host: vote.host,
+          houseguest: vote.houseguest
+        }))
+      }))
+    });
+
+    console.log('GraphQL Response:', response);
+    return response;
+  } catch (error) {
+    console.error('Error submitting episode data:', error);
+    throw error;
+  }
+};
+
+
   /******************************************************
    * 4) Final Submission:
    *    - Validation
